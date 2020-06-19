@@ -7,8 +7,8 @@ def insertDbMysql(create_db = False):
         Base.metadata.drop_all(engine)
         Base.metadata.create_all(engine)
 
-    apps = pd.read_csv('teste.csv')#ler csv dos aplicativos
-    comments = pd.read_csv('teste2.csv')#ler csv dos comentarios
+    apps = pd.read_csv('apks.csv')#ler csv dos aplicativos
+    comments = pd.read_csv('comentarios.csv')#ler csv dos comentarios
 
     apps = apps.fillna(-1) #substitui tds NaN por -1, para eu poder saber aonde era NaN
     comments = comments.fillna('') #substitui tds NaN por ''
@@ -39,7 +39,7 @@ def insertDbMysql(create_db = False):
         session.commit()
 
     for comment in comments.itertuples():
-        #pega a App para adicionar ao Comentario    
+        #pega a App para adicionar ao Comentario
         app = session.query(Apps).filter_by(name=comment.App).first()
         newComment = Comments(description=comment.Translated_Review[:3000])
         newComment.app = app
