@@ -1,0 +1,35 @@
+Obs: Estava faltando o campo de categoria no arquivo apks, adicionei  LIFESTYLE, pois sem Estava
+gerando bug...
+
+limpar (/,\,",')
+
+**************APK*****************
+
+App: Nome da Aplicação
+
+Category_Type: criado para armazenar a categoria
+
+Rating: Classificação geral do usuário do aplicativo (como quando raspada)
+
+Reviews: Número de avaliações de usuários do aplicativo (como quando raspadas)
+
+Installs: Número de downloads / instalações do usuário para o aplicativo (como quando raspado)
+
+Type: Pago ou Gratuito
+
+Price: Preço do aplicativo (como quando raspado)
+
+
+**************COMENTARIOS*****************
+
+App: Nome do aplicativo
+
+Translated_Review: Revisão do usuário (pré-processado e traduzido para inglês)
+
+Sentiment: Positivo / Negativo / Neutro (Pré-processado)
+
+
+Criado nova tabela para categorias
+********************Category***************
+
+Category: Categoria à qual o aplicativo pertence
