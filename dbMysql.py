@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 # Define a engine do MySQL usando o MySQL Connector/Python
 engine = sqlalchemy.create_engine(
     'mysql+mysqlconnector://geovane:1.618_3,14@localhost:3306/trabalhoNoSQL',
-    echo=True)
+    echo=False)
 
 # Define e cria a tabela
 Base = declarative_base()

@@ -1,8 +1,6 @@
 Obs: Estava faltando o campo de categoria no arquivo apks, adicionei  LIFESTYLE, pois sem Estava
 gerando bug...
 
-limpar (/,\,",')
-
 **************APK*****************
 
 App: Nome da Aplicação
