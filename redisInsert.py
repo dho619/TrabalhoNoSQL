@@ -1,52 +1,52 @@
-from dbRedis import db
+from dbRedis import dbRedis
 from dbMysql import session, engine, Apps, CategoryType, Comments
 
-def insertDRedis():
+def insertDbRedis():
     categorys = session.query(CategoryType).join(CategoryType.apps).all()
 
     mapReduceInstalls = {}
     mapReduceRating = {}
     mapReduceReviews = {}
-    mapReduceCount = {}
+    mapReduceCountComments = {}
     #aplicando a ideia de map reduce
     for category in categorys:
         installs = 0
         rating = 0
         reviews = 0
-        count = 0
+        count_comments = 0
         for app in category.apps:
             if app.num_installs != -1:#se for menos um e que era NaN anteriormente
                 installs += app.num_installs
             if app.rating != -1 and app.reviews != -1:#se qualquer dos dois era NaN, nao preenche nenhum
                 rating += app.rating
                 reviews += app.reviews
-            count += 1
+            count_comments += len(app.comments)
 
         key = category.description
         mapReduceInstalls[key] = installs
         mapReduceRating[key] = rating
         mapReduceReviews[key] = reviews
-        mapReduceCount[key] = count
+        mapReduceCountComments[key] = count_comments
 
-    db.flushall()#limpar td o banco
+    dbRedis.flushall()#limpar td o banco
 
 
     #adicionando no banco
-    for keyDict, value in mapReduceCount.items():
-        key = 'trabalhoNoSQL:Count:'+ keyDict
-        db.set(key, value)
+    for keyDict, value in mapReduceCountComments.items():
+        key = 'trabalhoNoSQL:countComments:'+ keyDict
+        dbRedis.set(key, value)
 
     for keyDict, value in mapReduceInstalls.items():
         key = 'trabalhoNoSQL:Installs:'+ keyDict
-        db.set(key, value)
+        dbRedis.set(key, value)
 
     for keyDict, value in mapReduceReviews.items():
         key = 'trabalhoNoSQL:Reviews:'+ keyDict
-        db.set(key, value)
+        dbRedis.set(key, value)
 
     for keyDict, value in mapReduceRating.items():
         key = 'trabalhoNoSQL:Rating:'+ keyDict
-        db.set(key, value)
+        dbRedis.set(key, value)
 
 
 #pegar todos os apps de cada categoria e retirar:
