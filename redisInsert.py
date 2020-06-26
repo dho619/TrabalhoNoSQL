@@ -14,17 +14,21 @@ def insertDbRedis():
         rating = 0
         reviews = 0
         count_comments = 0
+        count_Rating = 0
         for app in category.apps:
             if app.num_installs != -1:#se for menos um e que era NaN anteriormente
                 installs += app.num_installs
             if app.rating != -1 and app.reviews != -1:#se qualquer dos dois era NaN, nao preenche nenhum
                 rating += app.rating
                 reviews += app.reviews
+                if app.rating > 0:
+                    count_Rating += 1
+
             count_comments += len(app.comments)
 
         key = category.description
         mapReduceInstalls[key] = installs
-        mapReduceRating[key] = rating
+        mapReduceRating[key] = rating/count_Rating
         mapReduceReviews[key] = reviews
         mapReduceCountComments[key] = count_comments
 
