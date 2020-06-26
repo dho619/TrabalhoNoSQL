@@ -1,6 +1,7 @@
 from dbNeo4j import dbNeo4j
 from dbMongo import dbMongo, cliente
 
+#funcao auxiliar para fazer a relacao com o num instalacoes
 def relacionaNumInstalls(num, category, auxInstall):
     if num < 100000000:
         category.relationships.create("Possui", auxInstall[0])
@@ -15,6 +16,7 @@ def relacionaNumInstalls(num, category, auxInstall):
     else:
         category.relationships.create("Possui", auxInstall[5])
 
+#funcao auxiliar para fazer a relacao com as notas
 def relacionaRating(num, category, auxRating):
     if num < 1:
         category.relationships.create("Possui", auxRating[0])
@@ -32,6 +34,7 @@ def insertDbNeo4j():
 
     dbNeo4j.query('MATCH (n) DETACH DELETE n', returns=())#limpar banco
 
+    #cria tipos de nos
     ratings = dbNeo4j.labels.create("Ratings")
     reviews = dbNeo4j.labels.create("Reviews")
     installs = dbNeo4j.labels.create("Installs")
@@ -41,20 +44,25 @@ def insertDbNeo4j():
     auxInstall = []
     auxRating = []
 
+    #inserindo os nos de numero de instalacoes
     for i, valor in enumerate(['< 100M', '> 100M and < 500M', '> 500M and < 1B', '> 1B and < 2B', '> 2B and < 3B', '> 3B']):
         auxInstall.append(dbNeo4j.nodes.create(interval=valor))
         installs.add(auxInstall[i])
 
+    #inserindo os nos de notas
     for i, valor in enumerate(['Menor que 1', 'Entre 1 e 2', 'Entre 2 e 3', 'Entre 3 e 4', 'Maior que 4']):
         auxRating.append(dbNeo4j.nodes.create(Nota=valor))
         reviews.add(auxRating[i])
 
 
-    listaTipoApp = dbMongo.TipoAplicacao.find()
+    listaTipoApp = dbMongo.TipoAplicacao.find()#retorna tds registros de tipo de app
 
     for TipoApp in listaTipoApp:
+        #criando uma categoria
         category = dbNeo4j.nodes.create(description=TipoApp['description'], num_Apps=len(TipoApp['apps']), rating=TipoApp['rating'], review=TipoApp['reviews'], num_installs=TipoApp['num_installs'], num_comments=TipoApp['num_comments'])
+        #adicionando
         categorys.add(category)
+        #chama funcoes para criar relacoes
         relacionaNumInstalls(TipoApp['num_installs'], category, auxInstall)
         relacionaRating(TipoApp['rating'], category, auxRating)
 

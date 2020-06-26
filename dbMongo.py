@@ -1,6 +1,5 @@
 from pymongo import MongoClient
-import datetime
 
-cliente = MongoClient('mongodb://localhost:27017/')
+cliente = MongoClient('mongodb://localhost:27017/')#conecta no banco mongo
 
-dbMongo = cliente.TrabalhoNoSQL
+dbMongo = cliente.TrabalhoNoSQL #usar o banco TrabalhoNoSQL

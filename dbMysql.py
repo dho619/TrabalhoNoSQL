@@ -10,6 +10,7 @@ engine = sqlalchemy.create_engine(
 # Define e cria a tabela
 Base = declarative_base()
 
+#Tabelas
 class CategoryType(Base):
     __tablename__ = 'category_type'
 

@@ -5,12 +5,12 @@ from dbMysql import session, CategoryType
 
 def insertDbMongo():
 
-    categorys = session.query(CategoryType).join(CategoryType.apps).all()
+    categorys = session.query(CategoryType).join(CategoryType.apps).all()#pega tds categorias e apps
 
-    TipoAplicacao = dbMongo.TipoAplicacao
-    TipoAplicacao.drop()
+    TipoAplicacao = dbMongo.TipoAplicacao#cria ligamento com o banco
+    TipoAplicacao.drop() #limpa o banco
     for category in categorys:
-        TipoApp = {
+        TipoApp = { #json de criacao
                       "description": category.description,
                       "num_comments": loads(dbRedis.get('trabalhoNoSQL:countComments:' + category.description)),
                       "num_installs": loads(dbRedis.get('trabalhoNoSQL:Installs:' + category.description)),
@@ -18,6 +18,7 @@ def insertDbMongo():
                       "rating": loads(dbRedis.get('trabalhoNoSQL:Rating:' + category.description))
         }
         apps = []
+        #adiciona tds apps
         for app in category.apps:
             app ={
                 "name": app.name,
@@ -29,10 +30,7 @@ def insertDbMongo():
             }
             apps.append(app)
         TipoApp['apps'] = apps
-        id = TipoAplicacao.insert_one(TipoApp).inserted_id
+        id = TipoAplicacao.insert_one(TipoApp).inserted_id#insere no banco
         print(id)
 
     cliente.close
-
-# album = banco.album
-# musica_id = album.insert_one(musica).inserted_id

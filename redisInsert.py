@@ -51,7 +51,3 @@ def insertDbRedis():
     for keyDict, value in mapReduceRating.items():
         key = 'trabalhoNoSQL:Rating:'+ keyDict
         dbRedis.set(key, value)
-
-
-#pegar todos os apps de cada categoria e retirar:
-#um tipo de aplicativo: tem qts downloads? qual a media de nota? qual a media de downloads?
